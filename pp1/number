@@ -1,0 +1,18 @@
+<?php
+header('Content-Type: application/json');
+
+$number = basename($_SERVER['REQUEST_URI']);
+$number_formatter = new NumberFormatter("ru", NumberFormatter::SPELLOUT);
+$result = $number_formatter->format($number);
+
+
+$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$answer_array = array(
+		'url' => $url,
+		'response' => $result,
+		'method' => $_SERVER['REQUEST_METHOD']);
+
+$json_answer = json_encode($answer_array, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+file_put_contents("answer.json", $json_answer . "\n", FILE_APPEND | LOCK_EX);
+
+?>

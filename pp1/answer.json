@@ -1,0 +1,33 @@
+{
+    "url": "localhost/pp1/equation?a=2&b=4&c=-9",
+    "response": [
+        1.3452078799117,
+        -3.3452078799117
+    ],
+    "method": "GET"
+}
+{
+    "url": "localhost/pp1/fibonacci/10",
+    "response": 55,
+    "method": "GET"
+}
+{
+    "url": "localhost/pp1/number/505",
+    "response": "пятьсот пять",
+    "method": "GET"
+}
+{
+    "url": "localhost/pp1/weekday?date=12.04.2019",
+    "response": "Пятница",
+    "method": "GET"
+}
+{
+    "url": "localhost/pp1/region/72",
+    "response": "Тюменская область",
+    "method": "GET"
+}
+{
+    "url": "localhost/pp1/region/01",
+    "response": "Республика Адыгея",
+    "method": "GET"
+}

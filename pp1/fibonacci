@@ -1,0 +1,31 @@
+<?php
+header('Content-Type: application/json');
+
+$number = basename($_SERVER['REQUEST_URI']);
+
+if($number > 0)
+{
+	$result = fibonacci($number);
+}
+else
+{
+	$result = null;
+}
+
+$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$answer_array = array(
+		'url' => $url,
+		'response' => $result,
+		'method' => $_SERVER['REQUEST_METHOD']);
+
+$json_answer = json_encode($answer_array, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+file_put_contents("answer.json", $json_answer . "\n", FILE_APPEND | LOCK_EX);
+
+function fibonacci($n)
+{
+    return round(
+        pow((sqrt(5)+1) / 2, $n) / sqrt(5)
+    );
+}
+
+?>
