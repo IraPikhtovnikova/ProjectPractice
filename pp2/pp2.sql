@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 16 2019 г., 10:32
+-- Время создания: Апр 26 2019 г., 14:24
 -- Версия сервера: 5.6.38
 -- Версия PHP: 5.6.32
 
@@ -86,7 +86,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id_client`, `client_name`) VALUES
-(2, 'Иванов Петр Сергеевич');
+(2, 'Иванов Петр Сергеевич'),
+(7, 'Кукушкина Валерия Сергеевна');
 
 -- --------------------------------------------------------
 
@@ -170,7 +171,7 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT для таблицы `client`
 --
 ALTER TABLE `client`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `request`
