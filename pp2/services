@@ -1,0 +1,63 @@
+<?php
+
+header('Content-Type: application/json');
+require_once 'db_connection.php';
+
+$action = $_GET['action'];
+$result;
+switch($action)
+{
+	case "view_all":
+		$result = mysqli_fetch_all(mysqli_query($link, "CALL `all_services`()"), MYSQLI_ASSOC);
+	break;
+
+	case "view_one":
+		$id = $_GET["id"];
+		if(!is_null($id))
+		{
+			$result = mysqli_fetch_all(mysqli_query($link, "CALL `service_by_id`('$id')"), MYSQLI_ASSOC);
+		}		
+	break;
+
+	case "add":
+		$name = $_GET["name"];
+		$price = $_GET['price'];
+		if(!is_null($name) && !is_null($price))
+		{
+			mysqli_query($link, "CALL `service_add` ('$name', $price)");
+		}		
+	break;
+
+	case "update":
+		$name = $_GET["name"];
+		$price = $_GET['price'];
+		$id = $_GET["id"];
+		if(!is_null($name) && !is_null($id))
+		{
+			mysqli_query($link, "CALL `service_update` ('$name', $price, $id)");
+		}	
+	break;
+
+	case "delete":
+		$id = $_GET["id"];
+		if(!is_null($id))
+		{
+			mysqli_query($link, "CALL `service_delete`($id)");
+		}	
+	break;
+
+	default: break;
+}
+
+$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$example = array(
+		'url' => $url,
+		'response' => $result,
+		'method' => $_SERVER['REQUEST_METHOD']);
+
+	$json_example = json_encode($example, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+	file_put_contents("answer.json", $json_example . "\n", FILE_APPEND | LOCK_EX);
+
+
+
+?>
