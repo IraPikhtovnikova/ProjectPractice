@@ -1,0 +1,20 @@
+<?php
+header('Content-Type: application/json');
+
+
+$api = "http://www.mocky.io/v2/5c7db5e13100005a00375fda";
+$json = file_get_contents($api);
+$result = json_decode($json);
+
+$answer = str_replace(" ", "_", $result->result);
+
+$url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	$example = array(
+		'url' => $url,
+		'response' => $answer,
+		);
+
+	$json_example = json_encode($example, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+	file_put_contents("answer.json", $json_example . "\n", FILE_APPEND | LOCK_EX);
+
+?>
