@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Добавить тест</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+ <template v-if="!testnameFill">
+    <div>
+          <div>
+                 <label for="testname"> </label>
+				 <input type="text" id="testname" placeholder="Название теста"  v-model="testname" >
+            </div>
+            <p><button @click="testnameFill = !testnameFill" type="submit">Добавить вопросы</button>
+   </div>
+ </template>
+        </div>
+        <div class="row">
+            <form v-if="testnameFill" @submit.prevent="formSubmited = true">
+                <template v-for="(question, index) in questions">
+                    <div id="single_quest">
+                    <div>
+                        <label>Вопрос {{ index + 1 }}:</label>
+                        <p><input type="text" id="question" placeholder="Введите вопрос" v-model="question.text">
+                    </div>
+                    <div v-for="(answer, index) in question.answers">
+                        <span>
+                           Ответ {{ index + 1 }} :
+                        </span>
+                        <input type="text" id="answer" placeholder="Введите ответ" @change="index > 0 ? question.answers.push({text:'', correct: false}) : ''" v-model="question.answers[index].text">
+					<button type="button" @click="question.answers.length > 2 ? question.answers.splice(index,1) : ''">X</button>
+                        <div>
+                            <input type="checkbox" :id="'check'+index" v-model="question.answers[index].correct">
+                            <label :for="'check'+index">Правильный</label>
+                        </div>
+                    </div>
+                    <hr>
+                </template>
+				<div>
+                <button @click="insert_question">Новый вопрос</button>
+                <button @click="useAPI">Сохранить</button>
+                <button @click="exit_alert">Выйти</button>
+               </div>
+            </form>
+			 </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '.container',
+            data: {
+                formSubmited: false,
+                testnameFill: false,
+                testname: '',
+                questions: [
+                    {
+                        text: '',
+                        answers: [
+                            {
+                                text: '',
+                                correct: false
+                            },
+                            {
+                                text: '',
+                                correct: false
+                            }
+                        ]
+                    }
+                ],
+            },
+            methods: {
+                insert_question() {
+                    this.questions.push(
+                        {
+                            text: '',
+                            answers: [
+                                {
+                                    text: '',
+                                    correct: false
+                                },
+                                {
+                                    text: '',
+                                    correct: false
+                                }
+                            ]
+                        }
+                    );
+                },
+                exit_alert() {
+                    if(confirm("Сохранить изменения?"))
+                    {
+                        var quests = this.questions;
+                    $.ajax({
+                        url: "http://localhost/testing/tests",
+                        method: "POST",
+                        data: "name="+this.testname,
+                        success: function (data) {
+                             $.ajax({
+                                url: "http://localhost/testing/questions",
+                                method: "POST",
+                                data: { test_id: data, questions: quests },
+                                success: function (data) {
+                                    var questions_id = jQuery.parseJSON(data);
+                                    $.ajax({
+                                        url: "http://localhost/testing/answers",
+                                        method: "POST",
+                                        data: { questions_id: questions_id, questions: quests },
+                                        success: function (data){
+                                            document.location='main.html';
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    }
+                    else{
+                        document.location='main.html';
+                    }
+                    
+                },
+                useAPI() {
+                    var quests = this.questions;
+                    $.ajax({
+                        url: "http://localhost/testing/tests",
+                        method: "POST",
+                        data: "name="+this.testname,
+                        success: function (data) {
+                             $.ajax({
+                                url: "http://localhost/testing/questions",
+                                method: "POST",
+                                data: { test_id: data, questions: quests },
+                                success: function (data) {
+                                    var questions_id = jQuery.parseJSON(data);
+                                    $.ajax({
+                                        url: "http://localhost/testing/answers",
+                                        method: "POST",
+                                        data: { questions_id: questions_id, questions: quests },
+                                        success: function (data){
+                                            document.location='main.html';
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+<style>
+    input[type="text"]{
+        width: 400px;
+    }
+</style>
+</html>

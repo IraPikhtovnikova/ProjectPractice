@@ -1,0 +1,43 @@
+{
+    "name": "Тест первый",
+    "questions": [
+        {
+            "text": "Первый вопрос",
+            "answers": [
+                {
+                    "text": "Ответ раз",
+                    "correct": "false"
+                },
+                {
+                    "text": "Ответ два",
+                    "correct": "true"
+                },
+                {
+                    "text": "Третий ответ",
+                    "correct": "false"
+                },
+                {
+                    "text": "",
+                    "correct": "false"
+                }
+            ]
+        },
+        {
+            "text": "Второй вопрос",
+            "answers": [
+                {
+                    "text": "Раз ответ",
+                    "correct": "true"
+                },
+                {
+                    "text": "Ответ",
+                    "correct": "true"
+                },
+                {
+                    "text": "",
+                    "correct": "false"
+                }
+            ]
+        }
+    ]
+}
